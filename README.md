@@ -6,6 +6,7 @@ INSTALL INSTRUCTIONS:
 The chat.py module requires the lxml package to work properly. To ensure this is installed properly run either:
 
 installLinux.sh - works for most distributions of Linux
+
 installCygwin.sh - works for most versions of Cygwin
 
 
