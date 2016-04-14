@@ -10,14 +10,14 @@ linkRegEx = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0
 
 # there are faster ways to do this but this should work for our use case
 # just know there are more optimal solutions
-def uniquify(sequence):
+def _uniquify(sequence):
 	"""Make all items in a list unique, keeping order intact.
 
 	input: list of items to make unique
 
-	>>> uniquify([1,1,2,3,1,5,3,4,5])
+	>>> _uniquify([1,1,2,3,1,5,3,4,5])
 	[1, 2, 3, 5, 4]
-	>>> uniquify([1,3,6,4,7,5])
+	>>> _uniquify([1,3,6,4,7,5])
 	[1, 3, 6, 4, 7, 5]
 	"""
 	unique = []
@@ -27,24 +27,24 @@ def uniquify(sequence):
 	return unique
 
 
-def findMatches(string):
+def _findMatches(string):
 	"""Find all unique matches of @mentions, emoticons using (emotename) notation, and urls including
 	their corresponding Title.
 
 	input: string to find all unique matches
 
-	>>> findMatches('@test (hello) http://www.nfl.com')
+	>>> _findMatches('@test (hello) http://www.nfl.com')
 	{'mentions': ['test'], 'emoticons': ['hello'], 'links': [{'url': 'http://www.nfl.com', 'title': 'NFL.com - Official Site of the National Football League'}]}
-	>>> findMatches('@test @test @bob @test (hello) (hello) (hello) (goodbye)')
+	>>> _findMatches('@test @test @bob @test (hello) (hello) (hello) (goodbye)')
 	{'mentions': ['test', 'bob'], 'emoticons': ['hello', 'goodbye']}
-	>>> findMatches('http://www.nfl.com/fakeyfake')
+	>>> _findMatches('http://www.nfl.com/fakeyfake')
 	{'links': [{'url': 'http://www.nfl.com/fakeyfake', 'title': '404 Error - Unable to Load Page'}]}
-	>>> findMatches('http://www.iamafakewebsite12345.com/fakeyfake')
+	>>> _findMatches('http://www.iamafakewebsite12345.com/fakeyfake')
 	{'links': [{'url': 'http://www.iamafakewebsite12345.com/fakeyfake', 'title': 'Connection Error - Unable to Load Page'}]}
 	"""
 	results = dict()
 	
-	mentionMatches = uniquify(re.findall(mentionRegEx, string))
+	mentionMatches = _uniquify(re.findall(mentionRegEx, string))
 
 	# if we have any mention matches, put them in a list without the @ symbol
 	if len(mentionMatches) > 0:
@@ -52,7 +52,7 @@ def findMatches(string):
 		for mention in mentionMatches:
 			results['mentions'].append(mention[1:])
 
-	emoticonMatches = uniquify(re.findall(emoticonRegEx, string, re.I))
+	emoticonMatches = _uniquify(re.findall(emoticonRegEx, string, re.I))
 
 	# if we have any emoticon matches, put them in a list without the enclosing ()
 	if len(emoticonMatches) > 0:
@@ -60,7 +60,7 @@ def findMatches(string):
 		for emoticon in emoticonMatches:
 			results['emoticons'].append(emoticon[1:-1])
 
-	linkMatches = uniquify(re.findall(linkRegEx, string))
+	linkMatches = _uniquify(re.findall(linkRegEx, string))
 
 	# if we have any link matches, create an array of dictionaries with a title (or error if we cannot get a title)
 	if len(linkMatches) > 0:
@@ -82,11 +82,11 @@ def findMatches(string):
 
 
 def getMatchesJSON(string):
-	"""Returns JSON data on the matches of a given string.
+	"""Returns JSON data on the matches (@mentions, emoticons, and links) of a given string.
 
 	input: string to find all unique matches
 	"""
-	matches = findMatches(string)
+	matches = _findMatches(string)
 	retval = json.dumps(matches, separators=(',', ': '), indent=4)
 	return retval
 
