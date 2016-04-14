@@ -10,6 +10,8 @@ installLinux.sh - works for most distributions of Linux
 installCygwin.sh - works for most versions of Cygwin
 
 
+
+
 USING chat.py:
 
 The chat.py can be executed directly with python or used in a larger application or script. When running chat.py by itself, you will be
@@ -17,6 +19,9 @@ prompted to enter a string. Once this is done, your JSON string will be printed 
 
 If you are using the chat.py module inside your own application or script, you will be calling the getMatchesJSON(string) function, where
 string is the text you want to find matches on.
+
+
+
 
 UNIT TESTS:
 
